@@ -1,0 +1,135 @@
+{
+    "program_id": 0,
+    "subject_id": 0,
+    "year": 0,
+    "calculator": [
+        {
+            "name": "Nakop",
+            "multiplier": 0.6,
+            "actions": [
+                {
+                    "action": "conditional",
+                    "if": {
+                        "action": "or",
+                        "expression": [
+                            {
+                                "action": "condition",
+                                "first_operand": "DZ1",
+                                "operator": "<=",
+                                "second_operand": 3
+                            },
+                            {
+                                "action": "condition",
+                                "first_operand": "DZ2",
+                                "operator": "<=",
+                                "second_operand": 3
+                            },
+                            {
+                                "action": "condition",
+                                "first_operand": "KR1",
+                                "operator": "<=",
+                                "second_operand": 3
+                            },
+                            {
+                                "action": "condition",
+                                "first_operand": "KR2",
+                                "operator": "<=",
+                                "second_operand": 3
+                            }
+                        ]
+                    },
+                    "then": [
+                        {
+                            "action": "decorate",
+                            "first_operand": "$this",
+                            "operator": "*",
+                            "second_operand": 0.8
+                        }
+                    ],
+                    "else": []
+                }
+            ],
+            "sub": [
+                {
+                    "name": "DZ1",
+                    "multiplier": 0.25,
+                    "actions": [
+                        {
+                            "action": "round",
+                            "type": 0
+                        }
+                    ],
+                    "sub": []
+                },
+                {
+                    "name": "DZ2",
+                    "multiplier": 0.25,
+                    "actions": [
+                        {
+                            "action": "round",
+                            "type": 0
+                        }
+                    ],
+                    "sub": []
+                },
+                {
+                    "name": "KR1",
+                    "multiplier": 0.25,
+                    "actions": [
+                        {
+                            "action": "round",
+                            "type": 0
+                        }
+                    ],
+                    "sub": []
+                },
+                {
+                    "name": "KR2",
+                    "multiplier": 0.25,
+                    "actions": [
+                        {
+                            "action": "round",
+                            "type": 0
+                        }
+                    ],
+                    "sub": []
+                }
+            ]
+        },
+        {
+            "name": "Exam",
+            "multiplier": 0.4,
+            "actions": [
+                {
+                    "action": "condition",
+                    "if": {
+                        "action": "and",
+                        "expression": [
+                            {
+                                "action": "conditional",
+                                "first_operand": "$this",
+                                "operator": "!=",
+                                "second_operand": 0
+                            },
+                            {
+                                "action": "conditional",
+                                "first_operand": "Nakop",
+                                "operator": ">=",
+                                "second_operand": 4
+                            }
+                        ]
+                    },
+                    "then": [
+                        {
+                            "action": "decorate",
+                            "first_operand": "Nakop",
+                            "operator": "/",
+                            "second_operand": 0.6
+                        }
+                    ]
+                }
+            ],
+            "sub": []
+        }
+    ]
+}
