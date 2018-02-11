@@ -2,11 +2,11 @@ import { Component } from '@angular/core';
 import { PersonalService } from '../personal.service';
 
 @Component({
-    selector: 'app-getscore-hierarchy',
-    templateUrl: './hierarchy.component.html',
-    styleUrls: ['./hierarchy.component.css']
+    selector: 'app-getscore-search',
+    templateUrl: './search.component.html',
+    styleUrls: ['./search.component.css']
 })
-export class HierarchyComponent {
+export class SearchComponent {
     constructor(private personalService: PersonalService) {
 
     }

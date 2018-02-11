@@ -5,29 +5,37 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
 
-import { AppComponent } from './app.component';
-import { CalculatorShowComponent } from './calculator/show/calculator.show.component';
-import { CalculatorService } from './services/calculator.service';
+import { CalculatorShowLayoutComponent } from './calculator/show/layout/calculator.show.layout.component';
+import { CalculatorService } from './calculator/calculator.service';
 import { LayoutComponent } from './layout/layout.component';
-import { UserService } from './services/user.service';
-import { gsRoutes } from './app.routes';
+import { PersonalService } from './personal.service';
+import { getscoreRoutes } from './app.routes';
 import { HierarchyComponent } from './hierarchy/hierarchy.component';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { SearchComponent } from './search/search.component';
+import { FavouritesComponent } from './favourites/favourites.component';
+import { CalculatorShowRecursiveComponent } from './calculator/show/recursive/calculator.show.recursive.component';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
   declarations: [
-    AppComponent,
-    CalculatorShowComponent,
+    CalculatorShowLayoutComponent,
+    CalculatorShowRecursiveComponent,
     LayoutComponent,
-    HierarchyComponent
+    HierarchyComponent,
+    UserProfileComponent,
+    SearchComponent,
+    FavouritesComponent
   ],
   imports: [
     BrowserModule,
     CommonModule,
     FormsModule,
-    RouterModule.forRoot(gsRoutes)
+    RouterModule.forRoot(getscoreRoutes),
+    HttpClientModule
   ],
-  providers: [CalculatorService, UserService],
-  bootstrap: [AppComponent]
+  providers: [PersonalService],
+  bootstrap: [LayoutComponent]
 })
 export class AppModule { }

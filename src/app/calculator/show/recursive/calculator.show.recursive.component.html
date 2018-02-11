@@ -1,0 +1,24 @@
+<div *ngIf="node.calculator; then root else common"></div>
+
+<ng-template #root>
+    <div style="margin-left:5%" *ngFor="let child of node.calculator">
+        <app-getscores-recursive [node]="child"></app-getscores-recursive>
+    </div>
+</ng-template>
+
+<ng-template #common>
+    <div *ngIf="(node.sub) && (node.sub.length > 0); then group else field"></div>
+
+    <ng-template #group>
+        <div>{{node.name}}</div>
+        <div style="margin-left:5%" *ngFor="let child of node.sub">
+            <app-getscores-recursive [node]="child"></app-getscores-recursive>
+        </div>
+        <div>Score: {{ calculatorService.Execute(node.id) }}</div>
+    </ng-template>
+
+    <ng-template #field>
+        <div>{{node.name}}</div>
+        <input type="number" [(ngModel)] = "node.value"/>
+    </ng-template>
+</ng-template>
