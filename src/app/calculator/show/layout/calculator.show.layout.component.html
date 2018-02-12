@@ -1,4 +1,4 @@
 <div style="text-align:center;">TITLE</div>
 <app-getscores-recursive [node]="calculatorService.Schema"></app-getscores-recursive>
-<div style="font-weight: bold;">Final score: {{calculatorService.Execute(0)}}</div>
+<div style="font-weight: bold;">Final score: {{calculatorService.ComputedValues[0]}}</div>
 <button (click)="kek()">refresh</button>

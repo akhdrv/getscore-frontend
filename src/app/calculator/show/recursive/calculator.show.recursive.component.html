@@ -1,7 +1,7 @@
 <div *ngIf="node.calculator; then root else common"></div>
 
 <ng-template #root>
-    <div style="margin-left:5%" *ngFor="let child of node.calculator">
+    <div style="margin-left:5%" *ngFor="let child of node.calculator.sub">
         <app-getscores-recursive [node]="child"></app-getscores-recursive>
     </div>
 </ng-template>
@@ -14,11 +14,11 @@
         <div style="margin-left:5%" *ngFor="let child of node.sub">
             <app-getscores-recursive [node]="child"></app-getscores-recursive>
         </div>
-        <div>Score: {{ calculatorService.Execute(node.id) }}</div>
+        <div>Score: {{ calculatorService.ComputedValues[node.id] }}</div>
     </ng-template>
 
     <ng-template #field>
         <div>{{node.name}}</div>
-        <input type="number" [(ngModel)] = "node.value"/>
+        <input type="number" [(ngModel)] = "node.value" (ngModelChange)="calculatorService.Execute()" min="0" max="10"/>
     </ng-template>
 </ng-template>

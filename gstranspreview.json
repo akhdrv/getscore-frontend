@@ -2,140 +2,143 @@
     "program_id": 0,
     "subject_id": 0,
     "year": 0,
-    "calculator": [
-        {
-            "name": "Nakop",
-            "multiplier": 0.6,
-            "id": 1,
-            "actions": [
-                {
-                    "action": "condition",
-                    "if": {
-                        "action": "or",
-                        "expression": [
+    "calculator": {
+        "id": 0,
+        "sub": [
+            {
+                "name": "Nakop",
+                "multiplier": 0.6,
+                "id": 1,
+                "actions": [
+                    {
+                        "action": "conditional",
+                        "if": {
+                            "action": "or",
+                            "expression": [
+                                {
+                                    "action": "condition",
+                                    "first_operand": "2",
+                                    "operator": "<=",
+                                    "second_operand": 3
+                                },
+                                {
+                                    "action": "condition",
+                                    "first_operand": "3",
+                                    "operator": "<=",
+                                    "second_operand": 3
+                                },
+                                {
+                                    "action": "condition",
+                                    "first_operand": "4",
+                                    "operator": "<=",
+                                    "second_operand": 3
+                                },
+                                {
+                                    "action": "condition",
+                                    "first_operand": "5",
+                                    "operator": "<=",
+                                    "second_operand": 3
+                                }
+                            ]
+                        },
+                        "then": [
                             {
-                                "action": "condition",
-                                "first_operand": "2",
-                                "operator": "<=",
-                                "second_operand": 3
-                            },
-                            {
-                                "action": "condition",
-                                "first_operand": "3",
-                                "operator": "<=",
-                                "second_operand": 3
-                            },
-                            {
-                                "action": "condition",
-                                "first_operand": "4",
-                                "operator": "<=",
-                                "second_operand": 3
-                            },
-                            {
-                                "action": "condition",
-                                "first_operand": "5",
-                                "operator": "<=",
-                                "second_operand": 3
-                            }
-                        ]
-                    },
-                    "then": [
-                        {
-                            "action": "decorate",
-                            "first_operand": "1",
-                            "operator": "*",
-                            "second_operand": 0.8
-                        }
-                    ],
-                    "else": []
-                }
-            ],
-            "sub": [
-                {
-                    "name": "DZ1",
-                    "multiplier": 0.25,
-                    "id": 2,
-                    "actions": [
-                        {
-                            "action": "round",
-                            "type": 0
-                        }
-                    ],
-                    "sub": []
-                },
-                {
-                    "name": "DZ2",
-                    "multiplier": 0.25,
-                    "id": 3,
-                    "actions": [
-                        {
-                            "action": "round",
-                            "type": 0
-                        }
-                    ],
-                    "sub": []
-                },
-                {
-                    "name": "KR1",
-                    "multiplier": 0.25,
-                    "id": 4,
-                    "actions": [
-                        {
-                            "action": "round",
-                            "type": 0
-                        }
-                    ],
-                    "sub": []
-                },
-                {
-                    "name": "KR2",
-                    "multiplier": 0.25,
-                    "id": 5,
-                    "actions": [
-                        {
-                            "action": "round",
-                            "type": 0
-                        }
-                    ],
-                    "sub": []
-                }
-            ]
-        },
-        {
-            "name": "Exam",
-            "multiplier": 0.4,
-            "id": 6,
-            "actions": [
-                {
-                    "action": "conditional",
-                    "if": {
-                        "action": "and",
-                        "expression": [
-                            {
-                                "action": "condition",
-                                "first_operand": "6",
-                                "operator": "!=",
-                                "second_operand": 0
-                            },
-                            {
-                                "action": "condition",
+                                "action": "decorate",
                                 "first_operand": "1",
-                                "operator": ">=",
-                                "second_operand": 4
+                                "operator": "*",
+                                "second_operand": 0.8
+                            }
+                        ],
+                        "else": []
+                    }
+                ],
+                "sub": [
+                    {
+                        "name": "DZ1",
+                        "multiplier": 0.25,
+                        "id": 2,
+                        "actions": [
+                            {
+                                "action": "round",
+                                "type": 0
+                            }
+                        ],
+                        "sub": []
+                    },
+                    {
+                        "name": "DZ2",
+                        "multiplier": 0.25,
+                        "id": 3,
+                        "actions": [
+                            {
+                                "action": "round",
+                                "type": 0
+                            }
+                        ],
+                        "sub": []
+                    },
+                    {
+                        "name": "KR1",
+                        "multiplier": 0.25,
+                        "id": 4,
+                        "actions": [
+                            {
+                                "action": "round",
+                                "type": 0
+                            }
+                        ],
+                        "sub": []
+                    },
+                    {
+                        "name": "KR2",
+                        "multiplier": 0.25,
+                        "id": 5,
+                        "actions": [
+                            {
+                                "action": "round",
+                                "type": 0
+                            }
+                        ],
+                        "sub": []
+                    }
+                ]
+            },
+            {
+                "name": "Exam",
+                "multiplier": 0.4,
+                "id": 6,
+                "actions": [
+                    {
+                        "action": "conditional",
+                        "if": {
+                            "action": "and",
+                            "expression": [
+                                {
+                                    "action": "condition",
+                                    "first_operand": "6",
+                                    "operator": "!=",
+                                    "second_operand": 0
+                                },
+                                {
+                                    "action": "condition",
+                                    "first_operand": "1",
+                                    "operator": ">=",
+                                    "second_operand": 4
+                                }
+                            ]
+                        },
+                        "then": [
+                            {
+                                "action": "decorate",
+                                "first_operand": "1",
+                                "operator": "/",
+                                "second_operand": 0.6
                             }
                         ]
-                    },
-                    "then": [
-                        {
-                            "action": "decorate",
-                            "first_operand": "1",
-                            "operator": "/",
-                            "second_operand": 0.6
-                        }
-                    ]
-                }
-            ],
-            "sub": []
-        }
-    ]
+                    }
+                ],
+                "sub": []
+            }
+        ]
+    }
 }

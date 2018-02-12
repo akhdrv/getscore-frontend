@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 import { environment } from '../../environments/environment';
 import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/map';
 
 @Injectable()
 export class CalculatorService {
-    public Schema: any = {};
     private nodeReferences: any = {};
+    public Schema: any = {};
+    public ComputedValues: any = {};
 
     public constructor(private http: HttpClient) { }
 
@@ -34,165 +37,246 @@ export class CalculatorService {
             "program_id": 0,
             "subject_id": 0,
             "year": 0,
-            "calculator": [
-                {
-                    "name": "Nakop",
-                    "multiplier": 0.6,
-                    "id": 1,
-                    "actions": [
-                        {
-                            "action": "condition",
-                            "if": {
-                                "action": "or",
-                                "expression": [
+            "calculator": {
+                "id": 0,
+                "sub": [
+                    {
+                        "name": "Nakop",
+                        "multiplier": 0.6,
+                        "id": 1,
+                        "actions": [
+                            {
+                                "action": "conditional",
+                                "if": {
+                                    "action": "or",
+                                    "expression": [
+                                        {
+                                            "action": "condition",
+                                            "first_operand": "2",
+                                            "operator": "<=",
+                                            "second_operand": 3
+                                        },
+                                        {
+                                            "action": "condition",
+                                            "first_operand": "3",
+                                            "operator": "<=",
+                                            "second_operand": 3
+                                        },
+                                        {
+                                            "action": "condition",
+                                            "first_operand": "4",
+                                            "operator": "<=",
+                                            "second_operand": 3
+                                        },
+                                        {
+                                            "action": "condition",
+                                            "first_operand": "5",
+                                            "operator": "<=",
+                                            "second_operand": 3
+                                        }
+                                    ]
+                                },
+                                "then": [
                                     {
-                                        "action": "condition",
-                                        "first_operand": "2",
-                                        "operator": "<=",
-                                        "second_operand": 3
-                                    },
-                                    {
-                                        "action": "condition",
-                                        "first_operand": "3",
-                                        "operator": "<=",
-                                        "second_operand": 3
-                                    },
-                                    {
-                                        "action": "condition",
-                                        "first_operand": "4",
-                                        "operator": "<=",
-                                        "second_operand": 3
-                                    },
-                                    {
-                                        "action": "condition",
-                                        "first_operand": "5",
-                                        "operator": "<=",
-                                        "second_operand": 3
-                                    }
-                                ]
-                            },
-                            "then": [
-                                {
-                                    "action": "decorate",
-                                    "first_operand": "1",
-                                    "operator": "*",
-                                    "second_operand": 0.8
-                                }
-                            ],
-                            "else": []
-                        }
-                    ],
-                    "sub": [
-                        {
-                            "name": "DZ1",
-                            "multiplier": 0.25,
-                            "id": 2,
-                            "actions": [
-                                {
-                                    "action": "round",
-                                    "type": 0
-                                }
-                            ],
-                            "sub": []
-                        },
-                        {
-                            "name": "DZ2",
-                            "multiplier": 0.25,
-                            "id": 3,
-                            "actions": [
-                                {
-                                    "action": "round",
-                                    "type": 0
-                                }
-                            ],
-                            "sub": []
-                        },
-                        {
-                            "name": "KR1",
-                            "multiplier": 0.25,
-                            "id": 4,
-                            "actions": [
-                                {
-                                    "action": "round",
-                                    "type": 0
-                                }
-                            ],
-                            "sub": []
-                        },
-                        {
-                            "name": "KR2",
-                            "multiplier": 0.25,
-                            "id": 5,
-                            "actions": [
-                                {
-                                    "action": "round",
-                                    "type": 0
-                                }
-                            ],
-                            "sub": []
-                        }
-                    ]
-                },
-                {
-                    "name": "Exam",
-                    "multiplier": 0.4,
-                    "id": 6,
-                    "actions": [
-                        {
-                            "action": "conditional",
-                            "if": {
-                                "action": "and",
-                                "expression": [
-                                    {
-                                        "action": "condition",
-                                        "first_operand": "6",
-                                        "operator": "!=",
-                                        "second_operand": 0
-                                    },
-                                    {
-                                        "action": "condition",
+                                        "action": "decorate",
                                         "first_operand": "1",
-                                        "operator": ">=",
-                                        "second_operand": 4
+                                        "operator": "*",
+                                        "second_operand": 0.8
+                                    }
+                                ],
+                                "else": []
+                            }
+                        ],
+                        "sub": [
+                            {
+                                "name": "DZ1",
+                                "multiplier": 0.25,
+                                "id": 2,
+                                "actions": [
+                                    {
+                                        "action": "round",
+                                        "type": 0
+                                    }
+                                ],
+                                "sub": []
+                            },
+                            {
+                                "name": "DZ2",
+                                "multiplier": 0.25,
+                                "id": 3,
+                                "actions": [
+                                    {
+                                        "action": "round",
+                                        "type": 0
+                                    }
+                                ],
+                                "sub": []
+                            },
+                            {
+                                "name": "KR1",
+                                "multiplier": 0.25,
+                                "id": 4,
+                                "actions": [
+                                    {
+                                        "action": "round",
+                                        "type": 0
+                                    }
+                                ],
+                                "sub": []
+                            },
+                            {
+                                "name": "KR2",
+                                "multiplier": 0.25,
+                                "id": 5,
+                                "actions": [
+                                    {
+                                        "action": "round",
+                                        "type": 0
+                                    }
+                                ],
+                                "sub": []
+                            }
+                        ]
+                    },
+                    {
+                        "name": "Exam",
+                        "multiplier": 0.4,
+                        "id": 6,
+                        "actions": [
+                            {
+                                "action": "conditional",
+                                "if": {
+                                    "action": "and",
+                                    "expression": [
+                                        {
+                                            "action": "condition",
+                                            "first_operand": "6",
+                                            "operator": "!=",
+                                            "second_operand": 0
+                                        },
+                                        {
+                                            "action": "condition",
+                                            "first_operand": "1",
+                                            "operator": ">=",
+                                            "second_operand": 4
+                                        }
+                                    ]
+                                },
+                                "then": [
+                                    {
+                                        "action": "decorate",
+                                        "first_operand": "1",
+                                        "operator": "/",
+                                        "second_operand": 0.6
                                     }
                                 ]
-                            },
-                            "then": [
-                                {
-                                    "action": "decorate",
-                                    "first_operand": "1",
-                                    "operator": "/",
-                                    "second_operand": 0.6
-                                }
-                            ]
-                        }
-                    ],
-                    "sub": []
-                }
-            ]
+                            }
+                        ],
+                        "sub": []
+                    }
+                ]
+            }
         }`);
         this.nodeReferences = {};
-        this.init(this.Schema);
+        this.ComputedValues = { 0: 0 };
+        this.init(this.Schema.calculator);
     }
 
-    public Execute(node_id: number): number {
-        return 0;
+    public Execute(): void {
+        const context = { values: {}, computed: {} };
+
+        for (const n in this.nodeReferences) {
+            if (this.nodeReferences.hasOwnProperty(n)) {
+                const node = this.nodeReferences[n];
+                if (node.hasOwnProperty('value')) {
+                    context.values[node.id] = node.value;
+                }
+            }
+        }
+
+        this.executeComputing(context, 0);
+
+        this.ComputedValues = context.computed;
+    }
+
+    private executeComputing(context: any, node_id: number): void {
+
+    }
+
+    private executeAction(action: any, node_id: number): any {
+
+    }
+
+    private executeConditional(action: any, node_id: number): void {
+        if (action.hasOwnProperty('if') && action.if !== null) {
+            if (this.executeAction(action.if, node_id)) {
+                if (action.then instanceof Array) {
+                    for (const a of action.then) {
+                        this.executeAction(a, node_id);
+                    }
+                }
+            } else {
+                if (action.else instanceof Array) {
+                    for (const a of action.else) {
+                        this.executeAction(a, node_id);
+                    }
+                }
+            }
+        }
+    }
+/*
+    private executeCondition(action: any): boolean {
+
+    }
+
+    private executeRound(action: any, node_id: number): void {
+        if (typeof action.type === 'number') {
+            if (action.type === 0) {
+
+            }
+        }
+    }
+
+    private executeDecorate(action: any): number {
+
+    }
+
+    private executeAnd(action: any): number {
+
+    }
+
+    private executeOr(action: any): number {
+
+    }
+
+    /*
+    private executeEval(action: any): number {
+
+    }
+*/
+    private filterScore(score: number): number {
+        if (typeof (score) === 'number') {
+            if (score >= 0 && score <= 10) {
+                return score;
+            } else if (score < 0) {
+                return 0;
+            } else {
+                return 10;
+            }
+        } else {
+            return 0;
+        }
     }
 
     private init(schema: any): void {
-        if (schema.hasOwnProperty('calculator')) {
-            for (const part of schema.calculator) {
-                this.init(part);
-            }
-        } else {
-            if (schema.hasOwnProperty('id')) {
-                this.nodeReferences[schema.id] = schema;
-                if (!schema.sub || !schema.sub.length) {
-                    schema.value = 4;
-                } else {
-                    for (const part of schema.sub) {
-                        this.init(part);
-                    }
+        if (schema.hasOwnProperty('id')) {
+            this.nodeReferences[schema.id] = schema;
+            this.ComputedValues[schema.id] = 0;
+            if (!schema.sub || !schema.sub.length) {
+                schema.value = 4;
+            } else {
+                for (const part of schema.sub) {
+                    this.init(part);
                 }
             }
         }
