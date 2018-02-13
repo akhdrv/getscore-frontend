@@ -189,7 +189,7 @@ export class CalculatorService {
             if (this.nodeReferences.hasOwnProperty(n)) {
                 const node = this.nodeReferences[n];
                 if (node.hasOwnProperty('value')) {
-                    context.values[node.id] = node.value;
+                    context.values[node.id] = this.filterScore(node.value);
                 }
             }
         }
@@ -199,54 +199,149 @@ export class CalculatorService {
         this.ComputedValues = context.computed;
     }
 
-    private executeComputing(context: any, node_id: number): void {
+    private executeComputing(context: any, node_id: number): number {
+        if (typeof context.computed[node_id] === 'number') {
+            return context.computed[node_id];
+        }
 
+        context.computed[node_id] = 0;
+        const node = this.nodeReferences[node_id];
+        if (node.sub instanceof Array && node.sub.length > 0) {
+            for (const n of node.sub) {
+                context.computed[node_id] += this.executeComputing(context, n.id) *
+                    this.nodeReferences[n.id].multiplier;
+            }
+        } else {
+            context.computed[node_id] = context.values[node_id];
+        }
+        if (node.actions instanceof Array) {
+            for (const n of node.actions) {
+                this.executeAction(context, n, node_id);
+            }
+        }
+
+        return context.computed[node_id];
     }
 
-    private executeAction(action: any, node_id: number): any {
-
+    private executeAction(context: any, action: any, node_id: number): any {
+        if (typeof action.action === 'string' &&
+            typeof this['execute' + this.capitalize(action.action)] === 'function') {
+            return this['execute' + this.capitalize(action.action)](context, action, node_id);
+        }
     }
 
-    private executeConditional(action: any, node_id: number): void {
+    private executeConditional(context: any, action: any, node_id: number): void {
         if (action.hasOwnProperty('if') && action.if !== null) {
-            if (this.executeAction(action.if, node_id)) {
+            if (this.executeAction(context, action.if, node_id)) {
                 if (action.then instanceof Array) {
                     for (const a of action.then) {
-                        this.executeAction(a, node_id);
+                        this.executeAction(context, a, node_id);
                     }
                 }
             } else {
                 if (action.else instanceof Array) {
                     for (const a of action.else) {
-                        this.executeAction(a, node_id);
+                        this.executeAction(context, a, node_id);
                     }
                 }
             }
         }
     }
-/*
-    private executeCondition(action: any): boolean {
 
+    private executeCondition(context: any, action: any, node_id: number): boolean {
+        let first: number, second: number;
+        if (typeof action.first_operand === 'string') {
+            first = context.computed[action.first_operand];
+        } else {
+            first = action.first_operand;
+        }
+
+        if (typeof action.second_operand === 'string') {
+            second = context.computed[action.second_operand];
+        } else {
+            second = action.second_operand;
+        }
+
+        switch (action.operator) {
+            case '==':
+                return first === second;
+            case '!=':
+                return first !== second;
+            case '>':
+                return first > second;
+            case '<':
+                return first < second;
+            case '>=':
+                return first >= second;
+            case '<=':
+                return first <= second;
+            default:
+                return false;
+        }
     }
 
-    private executeRound(action: any, node_id: number): void {
+    private executeRound(context: any, action: any, node_id: number): void {
         if (typeof action.type === 'number') {
-            if (action.type === 0) {
-
+            const value = context.computed[node_id];
+            switch (action.type) {
+                case 0:
+                    context.computed[node_id] = Math.round(value);
+                    break;
+                case -1:
+                    context.computed[node_id] = Math.floor(value);
+                    break;
+                case 1:
+                    context.computed[node_id] = Math.ceil(value);
+                    break;
+                default:
+                    context.computed[node_id] = value;
             }
         }
     }
 
-    private executeDecorate(action: any): number {
-
+    private executeDecorate(context: any, action: any, node_id: number): void {
+        let value: number;
+        const second = action.second_operand;
+        if (typeof context.computed[node_id] === 'number') {
+            value = context.computed[node_id];
+            switch (action.operator) {
+                case '*':
+                    value *= second;
+                    break;
+                case '/':
+                    if (second !== 0) {
+                        value /= second;
+                    }
+                    break;
+                case '+':
+                    value += second;
+                    break;
+                case '-':
+                    value -= second;
+                    break;
+            }
+            context.computed[node_id] = value;
+        }
     }
 
-    private executeAnd(action: any): number {
-
+    private executeAnd(context: any, action: any, node_id: number): boolean {
+        if (action.expression instanceof Array) {
+            let out = true;
+            for (const a of action.expression) {
+                out = out && this.executeAction(context, a, node_id);
+            }
+            return out;
+        }
     }
 
-    private executeOr(action: any): number {
-
+    private executeOr(context: any, action: any, node_id: number): boolean {
+        if (action.expression instanceof Array) {
+            let out = false;
+            for (const a of action.expression) {
+                out = out || this.executeAction(context, a, node_id);
+            }
+            return out;
+        }
     }
 
     /*
@@ -266,6 +361,10 @@ export class CalculatorService {
         } else {
             return 0;
         }
+    }
+
+    private capitalize(str: string): string {
+        return str.replace(/(?:^|\s)\S/g, function (a) { return a.toUpperCase(); });
     }
 
     private init(schema: any): void {
