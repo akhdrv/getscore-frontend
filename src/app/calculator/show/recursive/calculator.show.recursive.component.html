@@ -19,6 +19,6 @@
 
     <ng-template #field>
         <div>{{node.name}}</div>
-        <input type="number" [(ngModel)] = "node.value" (ngModelChange)="calculatorService.Execute()" min="0" max="10"/>
+        <input type="number" [(ngModel)] = "node.value" (ngModelChange)="calculatorService.Execute().subscribe()" min="0" max="10"/>
     </ng-template>
 </ng-template>

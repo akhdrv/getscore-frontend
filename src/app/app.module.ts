@@ -16,6 +16,7 @@ import { SearchComponent } from './search/search.component';
 import { FavouritesComponent } from './favourites/favourites.component';
 import { CalculatorShowRecursiveComponent } from './calculator/show/recursive/calculator.show.recursive.component';
 import { HttpClientModule } from '@angular/common/http';
+import { ApiService } from './api.service';
 
 
 @NgModule({
@@ -35,7 +36,7 @@ import { HttpClientModule } from '@angular/common/http';
     RouterModule.forRoot(getscoreRoutes),
     HttpClientModule
   ],
-  providers: [PersonalService],
+  providers: [PersonalService, ApiService],
   bootstrap: [LayoutComponent]
 })
 export class AppModule { }
