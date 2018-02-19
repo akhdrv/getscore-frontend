@@ -10,17 +10,26 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class CalculatorService {
     private nodeReferences: any = {};
-    public Schema: any = {};
+    private schema: any = {};
     public ComputedValues: any = {};
+    private editor: CalculatorEditor;
+
+    public get Editor(): CalculatorEditor {
+        return this.editor;
+    }
+
+    public get Schema(): any {
+        return this.schema;
+    }
 
     public constructor(private apiService: ApiService) { }
 
-    public Load(id: any): Observable<any> {
+    public Load(id: any): Observable<void> {
         return this.apiService.GetSchema(id).map(s => {
-            this.Schema = s;
+            this.schema = s;
             this.nodeReferences = {};
             this.ComputedValues = { 0: 0 };
-            this.init(this.Schema.calculator);
+            this.init(this.schema.calculator);
         });
     }
 
@@ -259,5 +268,30 @@ class CalculatorExecutor {
 
     private capitalize(str: string): string {
         return str.replace(/(?:^|\s)\S/g, function (a) { return a.toUpperCase(); });
+    }
+}
+
+class CalculatorEditor {
+    private schema: any;
+    public constructor() { }
+
+    public Create(programId: number, subjectId: number) {
+        this.schema = {
+            program_id: programId,
+            subject_id: subjectId,
+            year: (_ => {
+                const date = new Date();
+                if (date.getMonth() + 1 < 7) {
+                    return date.getFullYear() - 1;
+                } else {
+                    return date.getFullYear();
+                }
+            })(),
+            calculator: {
+                id: 0,
+                actions: [],
+                sub: []
+            }
+        };
     }
 }

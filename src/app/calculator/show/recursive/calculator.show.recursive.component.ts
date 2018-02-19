@@ -2,8 +2,9 @@ import { Component, Input } from '@angular/core';
 import { CalculatorService } from '../../calculator.service';
 
 @Component({
-    selector: 'app-getscores-recursive',
-    templateUrl: './calculator.show.recursive.component.html'
+    selector: 'getscore-calc-recursive',
+    templateUrl: './calculator.show.recursive.component.html',
+    styleUrls: ['./calculator.show.recursive.component.css']
 })
 export class CalculatorShowRecursiveComponent {
     @Input() node: any;

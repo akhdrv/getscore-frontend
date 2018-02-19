@@ -3,7 +3,7 @@ import { PersonalService } from '../personal.service';
 import { Router } from '@angular/router';
 
 @Component({
-    selector: 'app-getscore-layout',
+    selector: 'getscore-layout',
     templateUrl: './layout.component.html',
     styleUrls: ['./layout.component.css']
 })

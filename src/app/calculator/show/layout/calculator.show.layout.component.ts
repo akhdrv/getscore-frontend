@@ -5,8 +5,9 @@ import { Subscription } from 'rxjs/Subscription';
 import { CalculatorShowRecursiveComponent } from '../recursive/calculator.show.recursive.component';
 
 @Component({
-    selector: 'app-gs-calc',
+    selector: 'getscore-calc-show',
     templateUrl: './calculator.show.layout.component.html',
+    styleUrls: ['./calculator.show.layout.component.css'],
     providers: [CalculatorService]
 })
 export class CalculatorShowLayoutComponent implements OnInit {
@@ -23,9 +24,5 @@ export class CalculatorShowLayoutComponent implements OnInit {
 
     ngOnInit() {
         this.calculatorService.Execute().subscribe();
-    }
-
-    kek() {
-        console.log(this.calculatorService);
     }
 }

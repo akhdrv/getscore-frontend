@@ -2,7 +2,7 @@
 
 <ng-template #root>
     <div style="margin-left:5%" *ngFor="let child of node.calculator.sub">
-        <app-getscores-recursive [node]="child"></app-getscores-recursive>
+        <getscore-calc-recursive [node]="child"></getscore-calc-recursive>
     </div>
 </ng-template>
 
@@ -12,7 +12,7 @@
     <ng-template #group>
         <div>{{node.name}}</div>
         <div style="margin-left:5%" *ngFor="let child of node.sub">
-            <app-getscores-recursive [node]="child"></app-getscores-recursive>
+            <getscore-calc-recursive [node]="child"></getscore-calc-recursive>
         </div>
         <div>Score: {{ calculatorService.ComputedValues[node.id] }}</div>
     </ng-template>

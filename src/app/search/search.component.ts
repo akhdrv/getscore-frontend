@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { PersonalService } from '../personal.service';
 
 @Component({
-    selector: 'app-getscore-search',
+    selector: 'getscore-search',
     templateUrl: './search.component.html',
     styleUrls: ['./search.component.css']
 })
