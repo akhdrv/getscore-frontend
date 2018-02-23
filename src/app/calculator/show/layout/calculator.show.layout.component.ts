@@ -18,7 +18,7 @@ export class CalculatorShowLayoutComponent implements OnInit {
         private router: Router) {
         this.cidSubscription = activatedRoute.params.subscribe(params => {
             const cid = params['id'];
-            calculatorService.Load(cid).subscribe();
+            calculatorService.LoadById(cid).subscribe();
         });
     }
 

@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { CalculatorService } from '../../calculator.service';
 
 @Component({
     selector: 'getscore-calc-edit-internal',
@@ -6,5 +7,6 @@ import { Component } from '@angular/core';
     styleUrls: ['./calculator.edit.internal.component.css']
 })
 export class CalculatorEditInternalComponent {
-
+    @Input() node: any;
+    constructor(private calculatorService: CalculatorService) {}
 }

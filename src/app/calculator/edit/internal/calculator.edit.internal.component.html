@@ -1,0 +1,18 @@
+<div *ngIf="node.id !== 0;">
+    <div>
+        <label>Field name:</label>
+        <input type="text" [(ngModel)]="node.name"/>
+    </div>
+    <div>
+        <label>Multiplier: </label>
+        <input type="number" [(ngModel)]="node.multiplier" min="0" max="1" (ngModelChange)="calculatorService.ReloadMultipliersFromEditor().subscribe();" />
+    </div>
+</div>
+<div>
+    <div *ngIf="node.id !== 0">Children</div>
+    <div style="margin-left: 5%;" *ngFor="let child of node.sub">
+        <getscore-calc-edit-internal [node]="child"></getscore-calc-edit-internal>
+    </div>
+    <button type="button" (click)="calculatorService.Editor.InsertChild(node.id, '');calculatorService.LoadFromEditor().subscribe();">Add field</button>
+</div>
+<button *ngIf="node.id !== 0" type="button" (click)="calculatorService.Editor.RemoveNode(node.id);calculatorService.LoadFromEditor().subscribe();">Remove</button>

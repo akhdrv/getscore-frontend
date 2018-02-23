@@ -1,2 +1,8 @@
-<div><getscore-calc-edit-internal></getscore-calc-edit-internal></div>
-<div><getscore-calc-recursive [node]=calculatorService.Schema></getscore-calc-recursive></div>
+<div style="margin-bottom: 50px;">
+    <getscore-calc-edit-internal [node]="calculatorService.Editor.Schema.calculator"></getscore-calc-edit-internal>
+</div>
+<div>
+    <div style="text-align:center;">TITLE</div>
+    <getscore-calc-recursive [node]="calculatorService.Editor.Schema"></getscore-calc-recursive>
+    <div style="font-weight: bold;">Final score: {{calculatorService.ComputedValues[0]}}</div>
+</div>

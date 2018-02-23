@@ -17,12 +17,16 @@ import { FavouritesComponent } from './favourites/favourites.component';
 import { CalculatorShowRecursiveComponent } from './calculator/show/recursive/calculator.show.recursive.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from './api.service';
+import { CalculatorEditComponent } from './calculator/edit/calculator.edit.component';
+import { CalculatorEditInternalComponent } from './calculator/edit/internal/calculator.edit.internal.component';
 
 
 @NgModule({
   declarations: [
     CalculatorShowLayoutComponent,
     CalculatorShowRecursiveComponent,
+    CalculatorEditComponent,
+    CalculatorEditInternalComponent,
     LayoutComponent,
     HierarchyComponent,
     UserProfileComponent,

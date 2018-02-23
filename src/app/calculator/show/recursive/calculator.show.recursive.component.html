@@ -1,24 +1,29 @@
-<div *ngIf="node.calculator; then root else common"></div>
-
-<ng-template #root>
-    <div style="margin-left:5%" *ngFor="let child of node.calculator.sub">
-        <getscore-calc-recursive [node]="child"></getscore-calc-recursive>
-    </div>
-</ng-template>
-
-<ng-template #common>
-    <div *ngIf="(node.sub) && (node.sub.length > 0); then group else field"></div>
-
-    <ng-template #group>
-        <div>{{node.name}}</div>
-        <div style="margin-left:5%" *ngFor="let child of node.sub">
+<div *ngIf="node.calculator || node.sub || node.id; then schemaExists"></div>
+<ng-template #schemaExists>
+    <div *ngIf="node.calculator; then root else common"></div>
+    <ng-template #root>
+        <div style="margin-left:5%;" *ngFor="let child of node.calculator.sub">
             <getscore-calc-recursive [node]="child"></getscore-calc-recursive>
         </div>
-        <div>Score: {{ calculatorService.ComputedValues[node.id] }}</div>
     </ng-template>
 
-    <ng-template #field>
-        <div>{{node.name}}</div>
-        <input type="number" [(ngModel)] = "node.value" (ngModelChange)="calculatorService.Execute().subscribe()" min="0" max="10"/>
+    <ng-template #common>
+        <div *ngIf="(node.sub) && (node.sub.length > 0); then group else field"></div>
+
+        <ng-template #group>
+            <div style="border:1px solid black;">
+                <div>{{node.name}}</div>
+                <div style="margin-left:5%;" *ngFor="let child of node.sub">
+                    <getscore-calc-recursive [node]="child"></getscore-calc-recursive>
+                </div>
+                <div>Score: {{ calculatorService.ComputedValues[node.id] }}</div>
+            </div>
+        </ng-template>
+
+        <ng-template #field>
+            <div>{{node.name}}</div>
+            <input type="number" [(ngModel)]="node.value" (ngModelChange)="calculatorService.Execute().subscribe()" min="0" max="10"
+            />
+        </ng-template>
     </ng-template>
 </ng-template>

@@ -8,5 +8,7 @@ import { CalculatorService } from '../calculator.service';
     providers: [CalculatorService]
 })
 export class CalculatorEditComponent {
-    public constructor(public calculatorService: CalculatorService) {}
+    public constructor(public calculatorService: CalculatorService) {
+        calculatorService.Editor.Create(1, 1);
+    }
 }

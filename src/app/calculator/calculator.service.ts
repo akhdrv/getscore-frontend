@@ -12,7 +12,7 @@ export class CalculatorService {
     private nodeReferences: any = {};
     private schema: any = {};
     public ComputedValues: any = {};
-    private editor: CalculatorEditor;
+    private editor: CalculatorEditor = new CalculatorEditor();
 
     public get Editor(): CalculatorEditor {
         return this.editor;
@@ -24,12 +24,37 @@ export class CalculatorService {
 
     public constructor(private apiService: ApiService) { }
 
-    public Load(id: any): Observable<void> {
+    public LoadById(id: any): Observable<void> {
         return this.apiService.GetSchema(id).map(s => {
+            this.loadBySchema(s).subscribe();
+        });
+    }
+
+    private loadBySchema(s: any): Observable<void> {
+        return Observable.create(_ => {
             this.schema = s;
             this.nodeReferences = {};
             this.ComputedValues = { 0: 0 };
             this.init(this.schema.calculator);
+        });
+    }
+
+    public LoadFromEditor(): Observable<void> {
+        return Observable.create(_ => {
+            this.loadBySchema(Object.assign({}, this.Editor.Schema)).subscribe();
+        });
+    }
+
+    public ReloadMultipliersFromEditor(): Observable<void> {
+        return Observable.create(_ => {
+            for (const id in this.nodeReferences) {
+                if (this.nodeReferences.hasOwnProperty(id)) {
+                    const node = this.Editor.nodeReferences[id];
+                    if (node && node.multiplier) {
+                        this.nodeReferences[id].multiplier = node.multiplier;
+                    }
+                }
+            }
         });
     }
 
@@ -81,23 +106,25 @@ class CalculatorExecutor {
             return this.context.computed[node_id];
         }
 
-        this.context.computed[node_id] = 0;
         const node = this.nodeReferences[node_id];
-        if (node.sub instanceof Array && node.sub.length > 0) {
-            for (const n of node.sub) {
-                this.context.computed[node_id] += this.Execute(n.id) *
-                    this.context.multipliers[n.id];
+        if (node) {
+            this.context.computed[node_id] = 0;
+            if (node.sub instanceof Array && node.sub.length > 0) {
+                for (const n of node.sub) {
+                    this.context.computed[node_id] += this.Execute(n.id) *
+                        this.context.multipliers[n.id];
+                }
+            } else {
+                this.context.computed[node_id] = this.context.values[node_id];
             }
-        } else {
-            this.context.computed[node_id] = this.context.values[node_id];
-        }
-        if (node.actions instanceof Array) {
-            for (const action of node.actions) {
-                this.executeAction(action, node_id);
+            if (node.actions instanceof Array) {
+                for (const action of node.actions) {
+                    this.executeAction(action, node_id);
+                }
             }
-        }
 
-        return this.context.computed[node_id];
+            return this.context.computed[node_id];
+        }
     }
 
     private executeAction(action: any, node_id: number): any {
@@ -186,6 +213,9 @@ class CalculatorExecutor {
         if (typeof this.context.computed[node_id] === 'number') {
             value = this.context.computed[node_id];
             switch (action.operator) {
+                case '%':
+                    value %= operand;
+                    break;
                 case '*':
                     value *= operand;
                     break;
@@ -231,6 +261,9 @@ class CalculatorExecutor {
         if (typeof this.context.computed[node_id] === 'number') {
             multiplier = this.context.multipliers[node_id];
             switch (action.operator) {
+                case '%':
+                    multiplier %= operand;
+                    break;
                 case '*':
                     multiplier *= operand;
                     break;
@@ -249,6 +282,36 @@ class CalculatorExecutor {
                     multiplier = operand;
             }
             this.context.multipliers[node_id] = multiplier;
+        }
+    }
+
+    private executeCompute(action: any, node_id: number): any {
+        const first_operand = action.first_operand,
+            second_operand = action.second_operand,
+            operator = action.operator;
+        let result: number;
+        if (!isNaN(first_operand) && !isNaN(first_operand) && operator) {
+            switch (operator) {
+                case '%':
+                    result = first_operand % second_operand;
+                    break;
+                case '*':
+                    result = first_operand * second_operand;
+                    break;
+                case '/':
+                    if (second_operand !== 0) {
+                        result = first_operand / second_operand;
+                    }
+                    break;
+                case '+':
+                    result = first_operand + second_operand;
+                    break;
+                case '-':
+                    result = first_operand - second_operand;
+                    break;
+            }
+
+            return result;
         }
     }
 
@@ -273,9 +336,12 @@ class CalculatorExecutor {
 
 class CalculatorEditor {
     private schema: any;
+    public nodeReferences: any;
+    private currentId: number;
     public constructor() { }
 
     public Create(programId: number, subjectId: number) {
+        this.currentId = 0;
         this.schema = {
             program_id: programId,
             subject_id: subjectId,
@@ -288,10 +354,107 @@ class CalculatorEditor {
                 }
             })(),
             calculator: {
-                id: 0,
+                id: this.currentId++,
                 actions: [],
                 sub: []
             }
         };
+        this.refreshReferences();
     }
+
+    public get Schema(): any {
+        return this.schema;
+    }
+
+    private refreshReferences(): void {
+        this.nodeReferences = {};
+        this.init(this.schema.calculator);
+    }
+
+    private getParentOf(nodeId): any {
+        for (const ref in this.nodeReferences) {
+            if (this.nodeReferences.hasOwnProperty(ref)) {
+                const node = this.nodeReferences[ref];
+                if (node.sub instanceof Array) {
+                    for (const c of node.sub) {
+                        if (c.id === nodeId) {
+                            return node;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private init(schema: any): void {
+        if (schema.hasOwnProperty('id')) {
+            this.nodeReferences[schema.id] = schema;
+            if (!schema.sub || !schema.sub.length) {
+                schema.value = 4;
+            } else {
+                for (const part of schema.sub) {
+                    this.init(part);
+                }
+            }
+        }
+    }
+
+    public InsertChild(parentId: number, childName: string, mult: number = null, position?: number): void {
+        if (this.nodeReferences.hasOwnProperty(parentId)) {
+            const node = {
+                id: this.currentId,
+                name: childName,
+                multiplier: mult,
+                actions: [],
+                sub: []
+            };
+            if (position && position >= 0) {
+                this.nodeReferences[parentId].sub.splice(position, 0, node);
+            } else {
+                this.nodeReferences[parentId].sub.push(node);
+            }
+            this.nodeReferences[this.currentId++] = node;
+            this.refreshReferences();
+        }
+    }
+
+    public MoveNode(nodeId: number, destinationParentId: number, position?: number): void {
+        const parentNode = this.getParentOf(nodeId);
+        const destinationParentNode = this.nodeReferences[destinationParentId];
+        const node = this.nodeReferences[nodeId];
+        if (node && parentNode && destinationParentNode) {
+            parentNode.sub.splice(parentNode.sub.indexOf(node), 1);
+            if (position && position >= 0) {
+                destinationParentNode.sub.splice(position, 0, node);
+            } else {
+                destinationParentNode.sub.push(node);
+            }
+            this.refreshReferences();
+        }
+    }
+
+    public RemoveNode(node_id: number): void {
+        const node = this.nodeReferences[node_id];
+        const parentNode = this.getParentOf(node_id);
+
+        if (node && parentNode) {
+            parentNode.sub.splice(parentNode.sub.indexOf(node), 1);
+            this.refreshReferences();
+        }
+    }
+
+    public RenameNode(node_id: number, name: string): void {
+        const node = this.nodeReferences[node_id];
+        node.name = name;
+    }
+
+    public ChangeMultiplier(node_id: number, multiplier: number): void {
+        const node = this.nodeReferences[node_id];
+        if (node.id !== 0) {
+            node.multiplier = multiplier;
+        }
+    }
+
+    // public GetPossibleActions(node_id: number): string[] {
+    // }
 }
