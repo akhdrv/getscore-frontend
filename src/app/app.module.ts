@@ -19,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from './api.service';
 import { CalculatorEditComponent } from './calculator/edit/calculator.edit.component';
 import { CalculatorEditInternalComponent } from './calculator/edit/internal/calculator.edit.internal.component';
+import { CalculatorShowFormulaInterpreterComponent } from './calculator/show/formula-interpreter/calculator.show.formula-interpreter';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { CalculatorEditInternalComponent } from './calculator/edit/internal/calc
     HierarchyComponent,
     UserProfileComponent,
     SearchComponent,
-    FavouritesComponent
+    FavouritesComponent,
+	CalculatorShowFormulaInterpreterComponent
   ],
   imports: [
     BrowserModule,

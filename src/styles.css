@@ -1,0 +1,86 @@
+* {
+	margin: 0px;
+	padding: 0px;
+	border-spacing: 0px;
+}
+body {
+	background: #efefef;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-bottom: 20px;
+	font-family: "Roboto","Helvetica","Arial",sans-serif;
+}
+#formula-interpreter #main-container {
+	max-width: 800px;
+	margin: auto;
+}
+#formula-interpreter #head-container {
+	height: 70px;
+	background: rgb(117,152,255);
+	box-shadow: 0px 1px 4px rgba(0,0,0,0.5);
+	border-radius: 0px 0px 2px 2px;
+}
+#formula-interpreter .head-text {
+	position: relative;
+	top: 50%;
+	transform: translate(0, -50%);
+	text-align: center;
+	font-size: 28px;
+	font-weight: bold;
+	color: #fff;
+}
+#formula-interpreter .entry-container {
+	background: #fff;
+	margin-top: 20px;
+	box-shadow: 0px 1px 4px rgba(0,0,0,0.5);
+	border-radius: 2px;
+}
+#formula-interpreter .entry-text {
+	font-size: 20px;
+}
+#formula-interpreter .textarea-wrapper {
+	box-sizing: border-box;
+	padding: 2px;
+	height: 100%;
+	width: 100%;
+}
+#formula-interpreter .adaptheight-textarea {
+	padding: 5px;
+	display: block;
+	outline: none;
+	resize: none;
+	border: 1px solid #888;
+	border-radius: 2px;
+	width: 100%;
+	font-size: 24px;
+	font-weight: bold;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+#formula-interpreter .adaptheight-textarea:focus {
+	border: 1px solid rgb(106,138,231);
+	box-shadow: 0px 0px 4px rgb(106,138,231);
+}
+#formula-interpreter .input-wrapper {
+	display: table;
+	box-sizing: border-box;
+	padding: 2px;
+	height: 100%;
+	width: 100%;
+}
+#formula-interpreter .input-cell {
+	display: table-cell;
+}
+#formula-interpreter .input-label {
+	display: table-cell;
+	width: 200px;
+	max-width: 400px;
+	font-size: 24px;
+	font-weight: bold;
+	text-align: center;
+	padding-left: 5px;
+	padding-right: 5px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
