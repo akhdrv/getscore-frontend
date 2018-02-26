@@ -12,7 +12,7 @@ export class CalculatorShowFormulaInterpreterComponent implements OnInit {
 	a = document.getElementById("grade-formula");
 	a.placeholder =
 			"Введите формулу оценки, например:\n" +
-			"НАКОП = 0.2 * ДЗ + 0.3 * КР1 + 0.3 * КР2\n" +
+			"НАКОП = 0.4 * ДЗ + 0.3 * КР1 + 0.3 * КР2\n" +
 			"ИТОГ = round(0.5 * ЭКЗ + 0.5 * НАКОП)";
 })();
 (function() {
