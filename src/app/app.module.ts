@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common/';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-
+import { HttpClientModule } from '@angular/common/http';
 
 import { CalculatorShowLayoutComponent } from './calculator/show/layout/calculator.show.layout.component';
 import { CalculatorService } from './calculator/calculator.service';
@@ -15,10 +15,10 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 import { SearchComponent } from './search/search.component';
 import { FavouritesComponent } from './favourites/favourites.component';
 import { CalculatorShowRecursiveComponent } from './calculator/show/recursive/calculator.show.recursive.component';
-import { HttpClientModule } from '@angular/common/http';
 import { ApiService } from './api.service';
 import { CalculatorEditComponent } from './calculator/edit/calculator.edit.component';
 import { CalculatorEditInternalComponent } from './calculator/edit/internal/calculator.edit.internal.component';
+import { CalculatorEditInternalActionSelectorComponent } from './calculator/edit/internal/action-selector/calculator.edit.internal.action-selector';
 
 
 @NgModule({
@@ -27,6 +27,7 @@ import { CalculatorEditInternalComponent } from './calculator/edit/internal/calc
     CalculatorShowRecursiveComponent,
     CalculatorEditComponent,
     CalculatorEditInternalComponent,
+    CalculatorEditInternalActionSelectorComponent,
     LayoutComponent,
     HierarchyComponent,
     UserProfileComponent,

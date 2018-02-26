@@ -1,11 +1,17 @@
 <div *ngIf="node.id !== 0;">
     <div>
         <label>Field name:</label>
-        <input type="text" [(ngModel)]="node.name"/>
+        <input type="text" [(ngModel)]="node.name" />
     </div>
     <div>
         <label>Multiplier: </label>
-        <input type="number" [(ngModel)]="node.multiplier" min="0" max="1" (ngModelChange)="calculatorService.ReloadMultipliersFromEditor().subscribe();" />
+        <input type="number" [(ngModel)]="node.multiplier" min="0" max="1" (ngModelChange)="calculatorService.ReloadMultipliersFromEditor().subscribe();"
+        />
+    </div>
+    <div>
+        <label>Actions:</label>
+        <getscore-calc-edit-actionselector *ngFor="let a of node.actions" [action]="a" [context]="'node'" [id]="node.id"></getscore-calc-edit-actionselector>
+        <button type="button" (click)="calculatorService.Editor.AddAction(node.id);">Add action</button>
     </div>
 </div>
 <div>

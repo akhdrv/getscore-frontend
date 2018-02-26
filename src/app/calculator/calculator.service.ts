@@ -30,9 +30,9 @@ export class CalculatorService {
         });
     }
 
-    private loadBySchema(s: any): Observable<void> {
+    private loadBySchema(schema: any): Observable<void> {
         return Observable.create(_ => {
-            this.schema = s;
+            this.schema = schema;
             this.nodeReferences = {};
             this.ComputedValues = { 0: 0 };
             this.init(this.schema.calculator);
@@ -101,58 +101,58 @@ class CalculatorExecutor {
         return this.context.computed;
     }
 
-    public Execute(node_id: number): number {
-        if (typeof this.context.computed[node_id] === 'number') {
-            return this.context.computed[node_id];
+    public Execute(nodeId: number): number {
+        if (typeof this.context.computed[nodeId] === 'number') {
+            return this.context.computed[nodeId];
         }
 
-        const node = this.nodeReferences[node_id];
+        const node = this.nodeReferences[nodeId];
         if (node) {
-            this.context.computed[node_id] = 0;
+            this.context.computed[nodeId] = 0;
             if (node.sub instanceof Array && node.sub.length > 0) {
                 for (const n of node.sub) {
-                    this.context.computed[node_id] += this.Execute(n.id) *
+                    this.context.computed[nodeId] += this.Execute(n.id) *
                         this.context.multipliers[n.id];
                 }
             } else {
-                this.context.computed[node_id] = this.context.values[node_id];
+                this.context.computed[nodeId] = this.context.values[nodeId];
             }
             if (node.actions instanceof Array) {
                 for (const action of node.actions) {
-                    this.executeAction(action, node_id);
+                    this.executeAction(action, nodeId);
                 }
             }
 
-            return this.context.computed[node_id];
+            return this.context.computed[nodeId];
         }
     }
 
-    private executeAction(action: any, node_id: number): any {
+    private executeAction(action: any, nodeId: number): any {
         if (typeof action.action === 'string' &&
             typeof this['execute' + this.capitalize(action.action)] === 'function') {
-            return this['execute' + this.capitalize(action.action)](action, node_id);
+            return this['execute' + this.capitalize(action.action)](action, nodeId);
         }
     }
 
-    private executeConditional(action: any, node_id: number): void {
+    private executeConditional(action: any, nodeId: number): void {
         if (action.hasOwnProperty('if') && action.if !== null) {
-            if (this.executeAction(action.if, node_id)) {
+            if (this.executeAction(action.if, nodeId)) {
                 if (action.then instanceof Array) {
                     for (const a of action.then) {
-                        this.executeAction(a, node_id);
+                        this.executeAction(a, nodeId);
                     }
                 }
             } else {
                 if (action.else instanceof Array) {
                     for (const a of action.else) {
-                        this.executeAction(a, node_id);
+                        this.executeAction(a, nodeId);
                     }
                 }
             }
         }
     }
 
-    private executeCondition(action: any, node_id: number): boolean {
+    private executeCondition(action: any, nodeId: number): boolean {
         let first: number, second: number;
         if (typeof action.first_operand === 'string') {
             if (!isNaN(action.first_operand)) {
@@ -188,30 +188,30 @@ class CalculatorExecutor {
         }
     }
 
-    private executeRound(action: any, node_id: number): void {
+    private executeRound(action: any, nodeId: number): void {
         if (typeof action.type === 'number') {
-            const value = this.Execute(node_id);
+            const value = this.Execute(nodeId);
             switch (action.type) {
                 case 0:
-                    this.context.computed[node_id] = Math.round(value);
+                    this.context.computed[nodeId] = Math.round(value);
                     break;
                 case -1:
-                    this.context.computed[node_id] = Math.floor(value);
+                    this.context.computed[nodeId] = Math.floor(value);
                     break;
                 case 1:
-                    this.context.computed[node_id] = Math.ceil(value);
+                    this.context.computed[nodeId] = Math.ceil(value);
                     break;
                 default:
-                    this.context.computed[node_id] = value;
+                    this.context.computed[nodeId] = value;
             }
         }
     }
 
-    private executeDecorate(action: any, node_id: number): void {
+    private executeDecorate(action: any, nodeId: number): void {
         let value: number;
         const operand = action.operand;
-        if (typeof this.context.computed[node_id] === 'number') {
-            value = this.context.computed[node_id];
+        if (typeof this.context.computed[nodeId] === 'number') {
+            value = this.context.computed[nodeId];
             switch (action.operator) {
                 case '%':
                     value %= operand;
@@ -231,35 +231,35 @@ class CalculatorExecutor {
                     value -= operand;
                     break;
             }
-            this.context.computed[node_id] = value;
+            this.context.computed[nodeId] = value;
         }
     }
 
-    private executeAnd(action: any, node_id: number): boolean {
+    private executeAnd(action: any, nodeId: number): boolean {
         if (action.expression instanceof Array) {
             let out = true;
             for (const a of action.expression) {
-                out = out && this.executeAction(a, node_id);
+                out = out && this.executeAction(a, nodeId);
             }
             return out;
         }
     }
 
-    private executeOr(action: any, node_id: number): boolean {
+    private executeOr(action: any, nodeId: number): boolean {
         if (action.expression instanceof Array) {
             let out = false;
             for (const a of action.expression) {
-                out = out || this.executeAction(a, node_id);
+                out = out || this.executeAction(a, nodeId);
             }
             return out;
         }
     }
 
-    private executeModmult(action: any, node_id: number): void {
+    private executeModmult(action: any, nodeId: number): void {
         let multiplier: number;
         const operand = action.operand;
-        if (typeof this.context.computed[node_id] === 'number') {
-            multiplier = this.context.multipliers[node_id];
+        if (typeof this.context.computed[nodeId] === 'number') {
+            multiplier = this.context.multipliers[nodeId];
             switch (action.operator) {
                 case '%':
                     multiplier %= operand;
@@ -281,11 +281,11 @@ class CalculatorExecutor {
                 case '=':
                     multiplier = operand;
             }
-            this.context.multipliers[node_id] = multiplier;
+            this.context.multipliers[nodeId] = multiplier;
         }
     }
 
-    private executeCompute(action: any, node_id: number): any {
+    private executeCompute(action: any, nodeId: number): any {
         const first_operand = action.first_operand,
             second_operand = action.second_operand,
             operator = action.operator;
@@ -362,6 +362,11 @@ class CalculatorEditor {
         this.refreshReferences();
     }
 
+    public Open(s: any) {
+        this.schema = Object.assign({}, s);
+        this.refreshReferences();
+    }
+
     public get Schema(): any {
         return this.schema;
     }
@@ -433,9 +438,9 @@ class CalculatorEditor {
         }
     }
 
-    public RemoveNode(node_id: number): void {
-        const node = this.nodeReferences[node_id];
-        const parentNode = this.getParentOf(node_id);
+    public RemoveNode(nodeId: number): void {
+        const node = this.nodeReferences[nodeId];
+        const parentNode = this.getParentOf(nodeId);
 
         if (node && parentNode) {
             parentNode.sub.splice(parentNode.sub.indexOf(node), 1);
@@ -443,18 +448,116 @@ class CalculatorEditor {
         }
     }
 
-    public RenameNode(node_id: number, name: string): void {
-        const node = this.nodeReferences[node_id];
+    public RenameNode(nodeId: number, name: string): void {
+        const node = this.nodeReferences[nodeId];
         node.name = name;
     }
 
-    public ChangeMultiplier(node_id: number, multiplier: number): void {
-        const node = this.nodeReferences[node_id];
+    public ChangeMultiplier(nodeId: number, multiplier: number): void {
+        const node = this.nodeReferences[nodeId];
         if (node.id !== 0) {
             node.multiplier = multiplier;
         }
     }
 
-    // public GetPossibleActions(node_id: number): string[] {
-    // }
+    public AddAction(nodeId: number): void {
+        const node = this.nodeReferences[nodeId];
+        if (node && node.actions instanceof Array) {
+            node.actions.push({});
+        }
+    }
+
+    public AddActionTo(listReference: any[]): void {
+        if (listReference) {
+            listReference.push({});
+        }
+    }
+
+    public GetAvailableReferences(nodeId: number): any[] {
+        const children = this.getChildrenOf(this.getParentOf(nodeId).id),
+            references = this.getNodesReferencing(nodeId);
+
+        const availableReferences = children.filter(el => { if (el === nodeId || references.indexOf(el) === -1) { return el; } });
+        return availableReferences.map(el => ({ value: el.toString(), display: this.nodeReferences[el].name }));
+    }
+
+    private getChildrenOf(nodeId: number): number[] {
+        const node = this.nodeReferences[nodeId];
+        if (node) {
+            let out = [];
+            if (node.sub instanceof Array) {
+                for (const child of node.sub) {
+                    out.push(child.id);
+                    out = out.concat(this.getChildrenOf(child.id));
+                }
+            }
+            return out;
+        }
+
+        return [];
+    }
+
+    private getNodesReferencing(nodeId: number): number[] {
+        const out = [];
+        for (const n in this.nodeReferences) {
+            if (this.nodeReferences.hasOwnProperty(n)) {
+                const node = this.nodeReferences[n];
+                let references = false;
+                if (node.id !== nodeId && node.actions instanceof Array) {
+                    for (const a of node.actions) {
+                        references = references || this.scanActionForReference(a, nodeId);
+                    }
+                }
+                if (references) {
+                    out.push(node.id);
+                }
+            }
+        }
+        return out;
+    }
+
+    private scanActionForReference(action: any, ref: number): boolean {
+        let out = false;
+        switch (action.action) {
+            case 'conditional':
+                if (action.if) {
+                    out = out || this.scanActionForReference(action.if, ref);
+                }
+                if (action.then) {
+                    for (const a of action.then) {
+                        out = out || this.scanActionForReference(a, ref);
+                    }
+                }
+                if (action.else) {
+                    for (const a of action.else) {
+                        out = out || this.scanActionForReference(a, ref);
+                    }
+                }
+                break;
+            case 'condition':
+                if ((+(action.first_operand) === ref) || (+(action.second_operand) === ref)) {
+                    return true;
+                }
+                break;
+            case 'and':
+            case 'or':
+                for (const a of action.expression) {
+                    out = out || this.scanActionForReference(a, ref);
+                }
+                break;
+        }
+        return out;
+    }
+
+    public MoveAction(nodeId: number, actionPosition: number, destinationPosition: number): void {
+        const node = this.nodeReferences[nodeId];
+        if (node && node.actions instanceof Array && actionPosition >= 0 &&
+            actionPosition < node.actions.length && destinationPosition >= 0) {
+            const action = node.actions[actionPosition];
+            node.actions.splice(destinationPosition, 0, action);
+            node.actions.splice(actionPosition, 1);
+        }
+    }
+
+    // public RemoveActionFrom()
 }

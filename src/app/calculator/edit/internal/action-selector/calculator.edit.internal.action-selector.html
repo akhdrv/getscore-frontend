@@ -1,0 +1,87 @@
+<div [ngSwitch]="context">
+    <div *ngSwitchCase="'node'">
+        <label>Action</label>
+        <select [(ngModel)]="action.action">
+            <option *ngFor="let opt of nodeOptions" [ngValue]="opt.value">{{ opt.display }}</option>
+        </select>
+        <getscore-calc-edit-actionselector *ngIf="action.action" [action]="action" [context]="action.action" [id]="id"></getscore-calc-edit-actionselector>
+    </div>
+    <div *ngSwitchCase="'decorate'">
+        <label>Decorate</label>
+        <select [(ngModel)]="action.operator">
+            <option *ngFor="let opt of decorateOptions" [ngValue]="opt.value">{{ opt.display }}</option>
+        </select>
+        <input type="number" [(ngModel)]='action.operand' />
+    </div>
+    <div *ngSwitchCase="'modmult'">
+        <label>Modmult</label>
+        <select [(ngModel)]="action.operator">
+            <option *ngFor="let opt of modmultOptions" [ngValue]="opt.value">{{ opt.display }}</option>
+        </select>
+        <input type="number" [(ngModel)]='action.operand' />
+    </div>
+    <div *ngSwitchCase="'conditional'">
+        <div>
+            <label>IF</label>
+            <getscore-calc-edit-actionselector *ngIf="action.if" [action]="action.if" [context]="'if'" [id]="id"></getscore-calc-edit-actionselector>
+        </div>
+        <div>
+            <label>THEN</label>
+            <getscore-calc-edit-actionselector *ngFor="let act of action.then" [action]="act" [context]="'node'" [id]="id"></getscore-calc-edit-actionselector>
+            <button type="button" (click)="calculatorService.Editor.AddActionTo(action.then);">Add action</button>
+        </div>
+        <div>
+            <label>ELSE</label>
+            <getscore-calc-edit-actionselector *ngFor="let act of action.else" [action]="act" [context]="'node'" [id]="id"></getscore-calc-edit-actionselector>
+            <button type="button" (click)="calculatorService.Editor.AddActionTo(action.else);">Add action</button>
+        </div>
+    </div>
+    <div *ngSwitchCase="'if'">
+        <select [(ngModel)]='action.action'>
+            <option *ngFor="let opt of ifOptions" [ngValue]="opt.value">{{ opt.display }}</option>
+        </select>
+        <getscore-calc-edit-actionselector *ngIf="action.action" [action]="action" [context]="action.action" [id]="id"></getscore-calc-edit-actionselector>
+    </div>
+    <div *ngSwitchCase="'round'">
+        <label>ROUND</label>
+        <select [(ngModel)]='action.type'>
+            <option *ngFor="let opt of roundOptions" [ngValue]="opt.value">{{ opt.display }}</option>
+        </select>
+    </div>
+    <div *ngSwitchCase="'and'">
+        <label>AND</label>
+        <getscore-calc-edit-actionselector *ngFor="let act of action.expression" [action]="act" [context]="'if'" [id]="id"></getscore-calc-edit-actionselector>
+        <button type="button" (click)="calculatorService.Editor.AddActionTo(action.expression);">Add condition</button>
+    </div>
+    <div *ngSwitchCase="'or'">
+        <label>OR</label>
+        <getscore-calc-edit-actionselector *ngFor="let act of action.expression" [action]="act" [context]="'if'" [id]="id"></getscore-calc-edit-actionselector>
+        <button type="button" (click)="calculatorService.Editor.AddActionTo(action.expression);">Add condition</button>
+    </div>
+    <div *ngSwitchCase="'condition'">
+        <label>CONDITION</label>
+        <div>
+            <label>FIRST OPERAND</label>
+            <select [(ngModel)]="cond.first_operand">
+                <option *ngFor="let opt of numrefOptions" [ngValue]="opt.value">{{ opt.display }}</option>
+            </select>
+            <select *ngIf="cond.first_operand === 1" [(ngModel)]='action.first_operand'>
+                <option *ngFor="let opt of calculatorService.Editor.GetAvailableReferences(id)" [ngValue]="opt.value">{{ opt.display }}</option>
+            </select>
+            <input *ngIf="cond.first_operand === 0" type="number" [(ngModel)]="action.first_operand" />
+        </div>
+        <select [(ngModel)]='action.operator'>
+            <option *ngFor="let opt of conditionOptions" [ngValue]="opt.value">{{ opt.display }}</option>
+        </select>
+        <div>
+            <label>SECOND OPERAND</label>
+            <select [(ngModel)]="cond.second_operand">
+                <option *ngFor="let opt of numrefOptions" [ngValue]="opt.value">{{ opt.display }}</option>
+            </select>
+            <select *ngIf="cond.second_operand === 1" [(ngModel)]='action.second_operand'>
+                <option *ngFor="let opt of calculatorService.Editor.GetAvailableReferences(id)" [ngValue]="opt.value">{{ opt.display }}</option>
+            </select>
+            <input *ngIf="cond.second_operand === 0" type="number" [(ngModel)]="action.second_operand" />
+        </div>
+    </div>
+</div>
