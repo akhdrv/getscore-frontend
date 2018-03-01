@@ -312,7 +312,7 @@ export class CalculatorShowFormulaInterpreterComponent implements OnInit {
 	elem = document.getElementById("grade-formula");
 	var calcId = 0;
 	var storageName = "formula-interpreter#" + calcId;
-	var isConstructor = false;
+	var isConstructor = true;
 
 	var containerDefined, containerParams;
 	if (isConstructor) {
