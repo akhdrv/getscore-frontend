@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
 	selector: 'getscore-calc-show-interpreter',
@@ -6,15 +6,23 @@ import { Component, OnInit } from '@angular/core';
 	styleUrls: ['./calculator.show.formula-interpreter.css']
 })
 export class CalculatorShowFormulaInterpreterComponent implements OnInit {
+
+	@Input() editMode: boolean;
+	@Input() calcId: number;
+	@Input() schema: any;
+
 	ngOnInit() {
 
 (function() {
 	let a: any;
 	a = document.getElementById("grade-formula");
-	a.value =
-			"Введите формулу оценки, например:\n" +
-			"НАКОП = 0.4 * ДЗ + 0.3 * КР1 + 0.3 * КР2\n" +
-			"ИТОГ = round(0.5 * ЭКЗ + 0.5 * НАКОП)";
+	if (this.schema.formula != undefined)
+		a.value = this.schema.formula;
+	else
+		a.value =
+				"Введите формулу оценки, например:\n" +
+				"НАКОП = 0.4 * ДЗ + 0.3 * КР1 + 0.3 * КР2\n" +
+				"ИТОГ = round(0.5 * ЭКЗ + 0.5 * НАКОП)";
 })();
 (function() {
 	var getDiff = function(elem) {
@@ -310,9 +318,9 @@ export class CalculatorShowFormulaInterpreterComponent implements OnInit {
 	};
 	let elem: any;
 	elem = document.getElementById("grade-formula");
-	var calcId = 0;
+	var calcId = this.calcId;
 	var storageName = "formula-interpreter#" + calcId;
-	var isConstructor = true;
+	var isConstructor = this.editMode;
 
 	var containerDefined, containerParams;
 	if (isConstructor) {
@@ -385,6 +393,7 @@ export class CalculatorShowFormulaInterpreterComponent implements OnInit {
 	};
 	var buildFormula = function(ctx) {
 		var code = elem.value;
+		this.schema.formula = code;
 		var lines = code.match(/^.*$/gm);
 		ctx.defined = {};
 		ctx.defined_arr = [];
