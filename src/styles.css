@@ -1,4 +1,60 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+#formula-interpreter #main-container {
+	max-width: 800px;
+	margin: auto;
+}
+#formula-interpreter .entry-container {
+	background: #fff;
+	margin-top: 20px;
+	box-shadow: 0px 1px 4px rgba(0,0,0,0.5);
+	border-radius: 2px;
+}
+#formula-interpreter .textarea-wrapper {
+	box-sizing: border-box;
+	padding: 2px;
+	height: 100%;
+	width: 100%;
+}
+#formula-interpreter .adaptheight-textarea {
+	padding: 5px;
+	display: block;
+	outline: none;
+	resize: none;
+	border: 1px solid #888;
+	border-radius: 2px;
+	width: 100%;
+	font-size: 24px;
+	font-weight: bold;
+	box-sizing: border-box;
+	overflow: hidden;
+}
+#formula-interpreter .adaptheight-textarea:focus {
+	border: 1px solid rgb(106,138,231);
+	box-shadow: 0px 0px 4px rgb(106,138,231);
+}
+#formula-interpreter .input-wrapper {
+	display: table;
+	box-sizing: border-box;
+	padding: 2px;
+	height: 100%;
+	width: 100%;
+}
+#formula-interpreter .input-cell {
+	display: table-cell;
+}
+#formula-interpreter .input-label {
+	display: table-cell;
+	width: 100px;
+	max-width: 200px;
+	font-size: 24px;
+	font-weight: bold;
+	text-align: center;
+	padding-left: 5px;
+	padding-right: 5px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
 
 body {
     margin: 0px;
