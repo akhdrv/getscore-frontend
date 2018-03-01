@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PersonalService } from '../personal.service';
 import { Router } from '@angular/router';
+import { MatFormField, MatButton } from '@angular/material';
+import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
+import { Observable } from 'rxjs/Observable';
+import { ApiService } from '../api.service';
 
 @Component({
     selector: 'getscore-layout',
@@ -8,7 +12,8 @@ import { Router } from '@angular/router';
     styleUrls: ['./layout.component.css']
 })
 export class LayoutComponent {
-    constructor(private personalService: PersonalService) {
-
+    public screenManager: Observable<BreakpointState>;
+    constructor(private personalService: PersonalService, private breakpointObserver: BreakpointObserver) {
+        // breakpointObserver.observe([Breakpoints.Handset, Breakpoints.])
     }
 }

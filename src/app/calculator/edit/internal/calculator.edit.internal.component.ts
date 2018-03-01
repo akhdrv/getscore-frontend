@@ -8,5 +8,5 @@ import { CalculatorService } from '../../calculator.service';
 })
 export class CalculatorEditInternalComponent {
     @Input() node: any;
-    constructor(private calculatorService: CalculatorService) {}
+    constructor(public calculatorService: CalculatorService) {}
 }

@@ -1,11 +1,25 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { PersonalService } from './personal.service';
+import 'rxjs/add/observable/bindCallback';
+import 'rxjs/add/operator/mergeMap';
+
+declare var VK: any;
+
+class VKMapper {
+    public Login(settings: any, callback: any) {
+        return VK.Api.login(settings, callback);
+    }
+}
 
 @Injectable()
 export class ApiService {
-    public constructor(private httpService: HttpClient, private personalService: PersonalService) { }
+    private vk: VKMapper = new VKMapper();
+    public constructor(private httpClient: HttpClient) {
+        VK.init({
+            apiId: 6376226
+        });
+    }
 
     public GetSchema(id: number): Observable<any> {
         return Observable.of(JSON.parse(`{
@@ -148,6 +162,24 @@ export class ApiService {
                 ]
             }
         }`));
+    }
+
+    public VKLogin(): Observable<any> {
+        const vkLogin = Observable.bindCallback(this.vk.Login);
+        return vkLogin(1 + Math.pow(2, 16));
+        // VK.Auth.login(this.loginCb, 1);
+    }
+
+    public VKLogout(): Observable<void> {
+        const vkLogout = Observable.bindCallback(VK.Auth.logout);
+        return vkLogout();
+    }
+
+    public Login(headers: any): Observable<boolean> {
+        return this.httpClient.post('/api/login',
+            {
+                'headers': headers
+            }).map((res: any) => res.NewUser);
     }
 
 
