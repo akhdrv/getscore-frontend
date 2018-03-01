@@ -7,10 +7,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CalculatorShowFormulaInterpreterComponent implements OnInit {
 	ngOnInit() {
+
 (function() {
 	let a: any;
 	a = document.getElementById("grade-formula");
-	a.placeholder =
+	a.value =
 			"Введите формулу оценки, например:\n" +
 			"НАКОП = 0.4 * ДЗ + 0.3 * КР1 + 0.3 * КР2\n" +
 			"ИТОГ = round(0.5 * ЭКЗ + 0.5 * НАКОП)";
@@ -311,8 +312,20 @@ export class CalculatorShowFormulaInterpreterComponent implements OnInit {
 	elem = document.getElementById("grade-formula");
 	var calcId = 0;
 	var storageName = "formula-interpreter#" + calcId;
+	var isConstructor = false;
+
+	var containerDefined, containerParams;
+	if (isConstructor) {
+		containerDefined = document.getElementById("tail-container-defined");
+		containerParams = document.getElementById("tail-container-params");
+	} else {
+		elem.disabled = true;
+		containerDefined = document.getElementById("head-container-defined");
+		containerParams = document.getElementById("head-container-params");
+	}
+
 	var buildDefined = function(ctx) {
-		var el = document.getElementById("tail-container-defined");
+		var el = containerDefined;
 		while (el.firstChild)
 			el.removeChild(el.firstChild);
 		for (var i = 0; i < ctx.defined_arr.length; ++i) {
@@ -338,7 +351,7 @@ export class CalculatorShowFormulaInterpreterComponent implements OnInit {
 		}
 	};
 	var buildParams = function(ctx) {
-		var el = document.getElementById("tail-container-params");
+		var el = containerParams;
 		while (el.firstChild)
 			el.removeChild(el.firstChild);
 		for (var i = 0; i < ctx.params_arr.length; ++i) {
