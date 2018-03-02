@@ -1,3 +1,9 @@
-<div style="text-align:center;">TITLE</div>
-<getscore-calc-recursive [node]="calculatorService.Schema"></getscore-calc-recursive>
-<div style="font-weight: bold;">Final score: {{calculatorService.ComputedValues[0]}}</div>
+<div style="text-align:center;">{{hierarchyService.GetSubjectName(this.calc.subjectId) | async}}</div>
+<ng-template *ngIf="this.calc.type === 1; then fromJson else fromFormula"></ng-template>
+<ng-template #fromJson>
+    <getscore-calc-recursive [node]="calculatorService.Schema"></getscore-calc-recursive>
+    <div style="font-weight: bold;">Final score: {{calculatorService.ComputedValues[0]}}</div>
+</ng-template>
+<ng-template #fromFormula>
+    <getscore-calc-show-interpreter [editMode]="false" [calcId]="this.calc.id" [schema]="this.calc.schema"
+</ng-template>

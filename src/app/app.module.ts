@@ -24,7 +24,7 @@ import { CalculatorEditComponent } from './calculator/edit/calculator.edit.compo
 import { CalculatorEditInternalComponent } from './calculator/edit/internal/calculator.edit.internal.component';
 import { CalculatorEditInternalActionSelectorComponent } from './calculator/edit/internal/action-selector/calculator.edit.internal.action-selector';
 import { LayoutUserSectionComponent } from './layout/user-section/layout.user-section.component';
-import { CalculatorShowFormulaInterpreterComponent } from './calculator/show/formula-interpreter/calculator.show.formula-interpreter';
+import { CalculatorShowFormulaInterpreterComponent } from './calculator/formula-interpreter/calculator.show.formula-interpreter';
 
 
 

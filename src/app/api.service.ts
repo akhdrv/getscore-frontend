@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/bindCallback';
 import 'rxjs/add/operator/mergeMap';
+import 'rxjs/add/operator/catch';
 
 declare var VK: any;
 
@@ -161,11 +162,12 @@ export class ApiService {
         const vkLogin = Observable.bindCallback((settings, callback) => {
             VK.Auth.login(callback, settings);
         });
-        return vkLogin(1 + Math.pow(2, 16)).map((data: any) => {
+        return vkLogin(1).map((data: any) => {
             if (!data.session) {
                 throw new Error();
             }
-            return data;
+
+            return data.session;
         });
     }
 
@@ -190,10 +192,7 @@ export class ApiService {
     }
 
     public Login(headers: any): Observable<boolean> {
-        return this.httpClient.post('/api/login', null,
-            {
-                'headers': headers
-            }).map((res: any) => res.NewUser);
+        return this.httpClient.post('/api/login', headers).map((res: any) => res.NewUser);
     }
 
     public GetCalculator(id: number): Observable<any> {
@@ -201,11 +200,11 @@ export class ApiService {
             if (res.Item) {
                 const item = res.Item;
                 return {
-                    id: res.id,
-                    type: res.type,
-                    userId: res.user_id,
-                    subjectId: res.subject_id,
-                    schema: res.contents
+                    id: item.id,
+                    type: item.type,
+                    userId: item.user_id,
+                    subjectId: item.subject_id,
+                    schema: item.contents
                 };
             }
         });
@@ -240,6 +239,40 @@ export class ApiService {
         return this.httpClient.delete('/api/calc/' + id + '/delete',
             { 'headers': headers }).map((res: any) => {
                 if (!res.Success) {
+                    throw new Error();
+                }
+            });
+    }
+
+    public GetFaculties(): Observable<any[]> {
+        return this.httpClient.get('/api/hierarchy').
+            map((res: any) => res.hierarchy);
+    }
+
+    public GetHierarchy(): Observable<any> {
+        return this.httpClient.get('/api/hierarchy').
+            map((res: any) => res.hierarchy);
+    }
+
+    public GetSubjects(programId: number): Observable<any[]> {
+        return this.httpClient.get('/api/program/' + programId + '/subjects').
+            map((res: any) => res.program);
+    }
+
+    public GetList(subjectId: number): Observable<any[]> {
+        return this.httpClient.get('/api/subject/' + subjectId + '/list_schemas').
+            map((res: any) => res.subject.schemas);
+    }
+
+    public GetProfileData(headers: any): Observable<any> {
+        return this.httpClient.get('/api/profile', { 'headers': headers });
+    }
+
+    public UpdateProfileData(updates: any, headers: any): Observable<void> {
+        return this.httpClient.put('/api/profile/update',
+            updates, { 'headers': headers, 'observe': 'response' }).
+            map((res: any) => {
+                if (res !== 200) {
                     throw new Error();
                 }
             });

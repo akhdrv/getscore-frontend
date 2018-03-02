@@ -27,11 +27,11 @@ export class CalculatorService {
 
     public LoadById(id: any): Observable<void> {
         return this.apiService.GetSchema(id).map(s => {
-            this.loadBySchema(s).subscribe();
+            this.LoadBySchema(s).subscribe();
         });
     }
 
-    private loadBySchema(schema: any): Observable<void> {
+    public LoadBySchema(schema: any): Observable<void> {
         return Observable.create(_ => {
             this.schema = schema;
             this.nodeReferences = {};
@@ -40,9 +40,16 @@ export class CalculatorService {
         });
     }
 
+    public GetCalc(id: any): Observable<any> {
+        if (isNaN(id)) {
+            return Observable.of();
+        }
+        return this.apiService.GetCalculator(+id);
+    }
+
     public LoadFromEditor(): Observable<void> {
         return Observable.create(_ => {
-            this.loadBySchema(Object.assign({}, this.Editor.Schema)).subscribe();
+            this.LoadBySchema(Object.assign({}, this.Editor.Schema)).subscribe();
         });
     }
 
