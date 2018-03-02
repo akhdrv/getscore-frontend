@@ -5,7 +5,7 @@ import { CalculatorEditComponent } from './calculator/edit/calculator.edit.compo
 import { CalculatorShowFormulaInterpreterComponent } from './calculator/show/formula-interpreter/calculator.show.formula-interpreter';
 
 export const getscoreRoutes: Routes = [
-	{ path: 'ayrat', component: CalculatorShowFormulaInterpreterComponent},
+    { path: 'ayrat', component: CalculatorShowFormulaInterpreterComponent },
     { path: 'add', component: CalculatorEditComponent },
     { path: 'calc/:id', component: CalculatorShowLayoutComponent },
     { path: '**', component: HierarchyComponent }

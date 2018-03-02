@@ -6,6 +6,7 @@ import { ApiService } from '../api.service';
 import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/from';
 import 'rxjs/add/operator/map';
+import { PersonalService } from '../personal.service';
 
 @Injectable()
 export class CalculatorService {
@@ -22,7 +23,7 @@ export class CalculatorService {
         return this.schema;
     }
 
-    public constructor(private apiService: ApiService) { }
+    public constructor(private apiService: ApiService, private personalService: PersonalService) { }
 
     public LoadById(id: any): Observable<void> {
         return this.apiService.GetSchema(id).map(s => {

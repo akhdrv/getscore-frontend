@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { PersonalService } from '../../personal.service';
 
 @Component({
     selector: 'getscore-user-section',
@@ -6,5 +7,7 @@ import { Component } from '@angular/core';
     styleUrls: ['./layout.user-section.component.css']
 })
 export class LayoutUserSectionComponent {
+    constructor(private personalService: PersonalService) {
 
+    }
 }

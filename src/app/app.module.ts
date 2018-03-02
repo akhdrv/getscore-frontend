@@ -41,7 +41,7 @@ import { CalculatorShowFormulaInterpreterComponent } from './calculator/show/for
     SearchComponent,
     FavouritesComponent,
     LayoutUserSectionComponent,
-	CalculatorShowFormulaInterpreterComponent
+    CalculatorShowFormulaInterpreterComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +59,7 @@ import { CalculatorShowFormulaInterpreterComponent } from './calculator/show/for
     MatInputModule,
     LayoutModule
   ],
-  providers: [PersonalService, ApiService],
+  providers: [ApiService, PersonalService],
   bootstrap: [LayoutComponent]
 })
 export class AppModule { }

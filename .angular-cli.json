@@ -22,9 +22,8 @@
         "styles.css"
       ],
       "scripts": [
-		"../node_modules/uikit/dist/js/uikit.min.js",
-		"../node_modules/uikit/dist/js/uikit-icons.min.js"
-],
+        "./vk_openapi/openapi.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

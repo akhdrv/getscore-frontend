@@ -1,1 +1,7 @@
-<button mat-button class="loginButton" (click)="apiService.TryLogin();">ВОЙТИ</button>
+<ng-template *ngIf="personalService.LoggedIn | async; then loggedIn else notLoggedIn;"></ng-template>
+<ng-template #notLoggedIn>
+    <button mat-button class="loginButton" (click)="personalService.Login().subscribe()">ВОЙТИ</button>
+</ng-template>
+<ng-template #loggedIn>
+    <button mat-button class="loginButton" (click)="personalService.Logout().subscribe()">ВЫЙТИ</button>
+</ng-template>
