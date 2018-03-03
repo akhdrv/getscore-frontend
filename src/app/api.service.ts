@@ -171,19 +171,26 @@ export class ApiService {
         });
     }
 
-    public VKGetUsers(ids: number[]): Observable<any[]> {
+    public VKGetUsers(ids?: number[]): Observable<any[]> {
+        const request: any = {
+            v: '5', fields: ['crop_photo']
+        };
+        if (ids) {
+            request.user_ids = ids;
+        }
         const apiCall: any = Observable.bindCallback(VK.Api.call);
-        return apiCall('users.get', { v: '5', user_ids: ids, fields: ['crop_photo'] }).map((res: any) => {
+        return apiCall('users.get', request).map((res: any) => {
             if (res.response) {
                 const out = [];
-                for (const user of res) {
+                for (const user of res.response) {
                     const u: any = {};
                     u.firstName = user.first_name;
                     u.lastName = user.last_name;
                     u.photoUrl = null;
                     if (user.crop_photo) {
-                        u.photoUrl = user.crop_photo.photo.photo_130;
+                        u.photoUrl = user.crop_photo.photo.photo_75;
                     }
+                    out.push(u);
                 }
                 return out;
             }
@@ -196,7 +203,7 @@ export class ApiService {
     }
 
     public GetCalculator(id: number): Observable<any> {
-        return this.httpClient.get('/api/' + id + '/get').map((res: any) => {
+        return this.httpClient.get('/api/calc/' + id + '/get').map((res: any) => {
             if (res.Item) {
                 const item = res.Item;
                 return {
@@ -244,19 +251,8 @@ export class ApiService {
             });
     }
 
-    public GetFaculties(): Observable<any[]> {
-        return this.httpClient.get('/api/hierarchy').
-            map((res: any) => res.hierarchy);
-    }
-
     public GetHierarchy(): Observable<any> {
-        return this.httpClient.get('/api/hierarchy').
-            map((res: any) => res.hierarchy);
-    }
-
-    public GetSubjects(programId: number): Observable<any[]> {
-        return this.httpClient.get('/api/program/' + programId + '/subjects').
-            map((res: any) => res.program);
+        return this.httpClient.get('/api/hierarchy');
     }
 
     public GetList(subjectId: number): Observable<any[]> {

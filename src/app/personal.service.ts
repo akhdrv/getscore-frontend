@@ -38,14 +38,14 @@ export class PersonalService {
         return this.apiService.VKLogin().mergeMap(data => {
             this.sessionData = data;
             localStorage.setItem('sessionData', JSON.stringify(data));
-            return this.apiService.Login(this.getHeaders());
+            return this.apiService.Login(this.Headers);
         }, ).catch(_ => {
             this.Logout().subscribe();
             return Observable.of(false);
         }).finally(() => { this.loggingIn = false; });
     }
 
-    private getHeaders() {
+    public get Headers() {
         if (!this.sessionData) {
             return null;
         }

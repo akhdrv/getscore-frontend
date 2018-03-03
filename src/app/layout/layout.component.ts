@@ -13,21 +13,9 @@ import { ApiService } from '../api.service';
 })
 export class LayoutComponent {
     public screenManager: Observable<BreakpointState>;
+    public smallScreen: any;
     constructor(private personalService: PersonalService, private breakpointObserver: BreakpointObserver) {
-        breakpointObserver.observe([
-            Breakpoints.Handset,
-            Breakpoints.HandsetLandscape,
-            Breakpoints.HandsetPortrait,
-            Breakpoints.Large,
-            Breakpoints.Medium,
-            Breakpoints.Small,
-            Breakpoints.Tablet,
-            Breakpoints.TabletLandscape,
-            Breakpoints.TabletPortrait,
-            Breakpoints.Web,
-            Breakpoints.WebLandscape,
-            Breakpoints.WebPortrait,
-            Breakpoints.XLarge,
+        this.smallScreen = breakpointObserver.observe([
             Breakpoints.XSmall
         ]);
     }

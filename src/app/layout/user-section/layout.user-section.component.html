@@ -3,11 +3,14 @@
     <button mat-button class="loginButton" (click)="personalService.Login().subscribe()">ВОЙТИ</button>
 </ng-template>
 <ng-template #loggedIn>
-    <!--<mat-card class="user-status-card">
-        <mat-card-header>
-            <div mat-card-avatar class="user-image" [ngStyle]="{'background-image'}"></div>
-            <mat-card-title>{{personalService.UserName}}</mat-card-title>
-        </mat-card-header>
-    </mat-card>-->
-    <button mat-button class="loginButton" (click)="personalService.Logout().subscribe()">ВЫЙТИ</button>
+    <mat-menu #userMenu="matMenu">
+        <button mat-menu-item (click)="personalService.Logout().subscribe()">
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Выйти</span>
+        </button>
+    </mat-menu>
+    <button mat-button class="user-status-card" [matMenuTriggerFor]="userMenu">
+        <div mat-card-avatar class="user-image" [ngStyle]="{'background-image': 'url(' + photoUrl + ')', 'display': 'inline-block', 'background-repeat': 'no-repeat', 'background-position': 'center'}"></div>
+        <div *ngIf="!((smallScreen | async)?.matches)" style="display: inline-block;">{{userName}}</div>
+    </button>
 </ng-template>

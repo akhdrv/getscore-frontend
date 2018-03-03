@@ -34,6 +34,7 @@ export class CalculatorService {
     public LoadBySchema(schema: any): Observable<void> {
         return Observable.create(_ => {
             this.schema = schema;
+            console.log(schema);
             this.nodeReferences = {};
             this.ComputedValues = { 0: 0 };
             this.init(this.schema.calculator);
