@@ -1,3 +1,3 @@
 # Getscore.me Frontend
 
-See [backend](github.com/nntarasov/getscore-backend)
+See [backend](http://github.com/nntarasov/getscore-backend)
