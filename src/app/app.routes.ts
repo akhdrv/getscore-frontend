@@ -8,5 +8,5 @@ export const getscoreRoutes: Routes = [
     { path: 'ayrat', component: CalculatorShowFormulaInterpreterComponent },
     { path: 'add', component: CalculatorEditComponent },
     { path: 'calc/:id', component: CalculatorShowLayoutComponent },
-    { path: '**', component: HierarchyComponent }
+    { path: '**', redirectTo: 'add' }
 ];

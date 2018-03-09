@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 
-import { MatMenuModule, MatCardModule, MatToolbarModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { MatMenuModule, MatCardModule, MatToolbarModule, MatButtonModule, MatIconModule, MatFormFieldModule, MatInputModule, MatSelectModule } from '@angular/material';
 import { LayoutModule } from '@angular/cdk/layout';
 
 import { CalculatorShowLayoutComponent } from './calculator/show/layout/calculator.show.layout.component';
@@ -25,6 +25,8 @@ import { CalculatorEditInternalComponent } from './calculator/edit/internal/calc
 import { CalculatorEditInternalActionSelectorComponent } from './calculator/edit/internal/action-selector/calculator.edit.internal.action-selector';
 import { LayoutUserSectionComponent } from './layout/user-section/layout.user-section.component';
 import { CalculatorShowFormulaInterpreterComponent } from './calculator/formula-interpreter/calculator.show.formula-interpreter';
+import { HierarchyService } from './hierarchy/hierarchy.service';
+import { HomepageComponent } from './homepage/homepage.component';
 
 
 
@@ -41,7 +43,8 @@ import { CalculatorShowFormulaInterpreterComponent } from './calculator/formula-
     SearchComponent,
     FavouritesComponent,
     LayoutUserSectionComponent,
-    CalculatorShowFormulaInterpreterComponent
+    CalculatorShowFormulaInterpreterComponent,
+    HomepageComponent
   ],
   imports: [
     BrowserModule,
@@ -57,9 +60,10 @@ import { CalculatorShowFormulaInterpreterComponent } from './calculator/formula-
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     LayoutModule
   ],
-  providers: [ApiService, PersonalService],
+  providers: [ApiService, PersonalService, HierarchyService],
   bootstrap: [LayoutComponent]
 })
 export class AppModule { }

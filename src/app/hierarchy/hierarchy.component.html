@@ -1,0 +1,30 @@
+<mat-card>
+    <mat-form-field *ngIf="hierarchyService.Hierarchy">
+        <mat-select placeholder="Факультет" [(ngModel)]="selectedFaculty" (ngModelChange)="selectedYear=null;renewYears();subjectId.value=null;selectedSpeciality=null;">
+            <mat-option *ngFor="let faculty of hierarchyService.Hierarchy.Faculties" [value]="faculty">
+                {{faculty.FacultyName}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="selectedFaculty">
+        <mat-select placeholder="Год выпуска" [(ngModel)]="selectedYear" (ngModelChange)="selectedSpeciality=null;" [disabled]="!selectedFaculty">
+            <mat-option *ngFor="let year of years" [value]="specByYear[year]">
+                {{year}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="selectedYear">
+        <mat-select placeholder="Образовательная программа" [(ngModel)]="selectedSpeciality" (ngModelChange)="subjectId.value=null;" [disabled]="!selectedYear">
+            <mat-option *ngFor="let speciality of selectedYear" [value]="speciality">
+                {{speciality.SpecialityName}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <mat-form-field *ngIf="selectedSpeciality">
+        <mat-select placeholder="Предмет" [(ngModel)]="subjectId.value" [disabled]="!selectedSpeciality">
+            <mat-option *ngFor="let subject of selectedSpeciality.Subjects" [value]="subject.SubjectId">
+                {{subject.SubjectName}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</mat-card>

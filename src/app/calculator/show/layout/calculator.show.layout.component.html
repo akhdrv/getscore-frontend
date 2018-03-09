@@ -1,9 +1,11 @@
-<div style="text-align:center;">{{hierarchyService.GetSubjectName(this.calc.subjectId) | async}}</div>
-<ng-template *ngIf="this.calc.type === 1; then fromJson else fromFormula"></ng-template>
-<ng-template #fromJson>
+<!--<div *ngIf="calc" style="text-align:center;">
+    {{hierarchyService.GetSubjectName(calc.subjectId)}}</div>-->
+<mat-card *ngIf="calc" style="text-align:center;font-size: 150%;font-weight:bold;">{{hierarchyService.GetSubjectName(calc.subjectId)}}</mat-card>
+
+<div *ngIf="calc && calc.type === 1">
     <getscore-calc-recursive [node]="calculatorService.Schema"></getscore-calc-recursive>
     <div style="font-weight: bold;">Final score: {{calculatorService.ComputedValues[0]}}</div>
-</ng-template>
-<ng-template #fromFormula>
-    <getscore-calc-show-interpreter [editMode]="false" [calcId]="this.calc.id" [schema]="this.calc.schema"
-</ng-template>
+</div>
+<div *ngIf="calc && calc.type === 2">
+    <getscore-calc-show-interpreter [editMode]="false" [schema]="calc.schema" [calcId]="calc.id"></getscore-calc-show-interpreter>
+</div>
