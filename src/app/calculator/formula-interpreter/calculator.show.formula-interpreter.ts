@@ -12,7 +12,7 @@ export class CalculatorShowFormulaInterpreterComponent implements OnInit {
     @Input() schema: any;
 
     ngOnInit() {
-        let a: any;
+        /*let a: any;
         a = document.getElementById('grade-formula');
         if (this.schema && this.schema.formula !== undefined) {
             a.value = this.schema.formula;
@@ -21,7 +21,7 @@ export class CalculatorShowFormulaInterpreterComponent implements OnInit {
                 'Введите формулу оценки, например:\n' +
                 'Накопленная = 0.4 * ДЗ + 0.3 * КР1 + 0.3 * КР2\n' +
                 'Итоговая = round(0.5 * ЭКЗ + 0.5 * Накопленная)';
-        }
+        }*/
 
         const getDiff = function (elem) {
             return parseInt(getComputedStyle(elem).height, 10) - elem.clientHeight;

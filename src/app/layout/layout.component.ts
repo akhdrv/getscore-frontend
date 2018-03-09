@@ -13,10 +13,8 @@ import { ApiService } from '../api.service';
 })
 export class LayoutComponent {
     public screenManager: Observable<BreakpointState>;
-    public smallScreen: any;
-    constructor(private personalService: PersonalService, private breakpointObserver: BreakpointObserver) {
-        this.smallScreen = breakpointObserver.observe([
-            Breakpoints.XSmall
-        ]);
+
+    constructor(private personalService: PersonalService) {
+
     }
 }

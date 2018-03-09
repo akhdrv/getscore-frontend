@@ -219,7 +219,6 @@ export class ApiService {
 
     public UpdateCalculator(id: number, type: number,
         subjectId: number, schema: string, headers: any): Observable<boolean> {
-
         return this.httpClient.put('/api/calc/' + id + '/modify', {
             'Id': id,
             'Type': type,
@@ -234,7 +233,6 @@ export class ApiService {
 
     public CreateCalculator(type: number,
         subjectId: number, schema: string, headers: any): Observable<number> {
-
         return this.httpClient.post('/api/calc/create', {
             'Type': type,
             'SubjectId': subjectId,

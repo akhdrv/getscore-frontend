@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PersonalService } from '../../personal.service';
 import { ApiService } from '../../api.service';
 import { BreakpointObserver, Breakpoints, BreakpointState } from '@angular/cdk/layout';
@@ -9,7 +9,7 @@ import { Observable } from 'rxjs/Observable';
     templateUrl: './layout.user-section.component.html',
     styleUrls: ['./layout.user-section.component.css']
 })
-export class LayoutUserSectionComponent {
+export class LayoutUserSectionComponent implements OnInit {
     private userName: string;
     private photoUrl: string;
     public smallScreen: Observable<BreakpointState>;
@@ -24,5 +24,10 @@ export class LayoutUserSectionComponent {
                 this.photoUrl = u.photoUrl;
             }
         });
+    }
+
+    ngOnInit() {
+        console.log(this.photoUrl);
+        console.log(this.userName);
     }
 }
